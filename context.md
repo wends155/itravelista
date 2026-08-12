@@ -4,17 +4,20 @@
 
 ---
 
-## Session Summary: 2026-08-13 (Bug Fix — Index Page Route Shadowing)
+## Session Summary: 2026-08-13 (Bug Fixes — Dashboard Quick Access & Header Interactivity)
 
 ### Decisions & Fix Log
 
-- **Issue**: Navigating to `http://localhost:3000/` was rendering the default Next.js starter boilerplate page instead of the ITravelista PH Home Dashboard.
-- **Root Cause**: An orphaned `src/app/page.tsx` file created during initial `create-next-app` scaffolding took precedence in Next.js App Router over `src/app/(main)/page.tsx`.
-- **Action Taken**:
-  1. Deleted `src/app/page.tsx`.
-  2. Deleted dead `create-next-app` assets from `public/` (`next.svg`, `vercel.svg`, `file.svg`, `globe.svg`, `window.svg`).
-  3. Cleared `.next` build cache and ran verification suite (`npm run type-check`, `npm run test`, `npm run build`).
-- **Verification**: `npm run build` confirmed `GET /` now renders `src/app/(main)/page.tsx` with the ITravelista PH Dashboard.
+- **Issues**:
+  1. Quick Access grid at bottom was cut off behind fixed BottomNav.
+  2. Menu button (☰) did nothing when tapped.
+  3. Notification bell icon (🔔) did nothing when tapped.
+- **Actions Taken**:
+  1. Built `SideDrawer` (`src/components/shared/side-drawer.tsx`) — a left-side slide-in navigation drawer with backdrop overlay, links to core features, and a Login CTA.
+  2. Built `NotificationDropdown` (`src/components/shared/notification-dropdown.tsx`) — a dropdown panel displaying "No notifications yet" placeholder.
+  3. Built `DashboardHeader` (`src/features/dashboard/components/dashboard-header.tsx`) — interactive client component managing drawer & dropdown state.
+  4. Updated `src/app/(main)/page.tsx` — integrated `DashboardHeader`, added `pb-24` bottom padding so Quick Access grid is fully visible above BottomNav, and removed non-functional red dot badge.
+  5. Ran verification pipeline (`npm run type-check`, `npm run test`, `npm run build`).
 
 ---
 

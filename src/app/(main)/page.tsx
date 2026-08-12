@@ -1,26 +1,13 @@
 import Link from 'next/link';
-import { Bell, Menu, Search, FileText, Wallet, Compass, ShieldCheck } from 'lucide-react';
+import { Search, FileText, Wallet, Compass, ShieldCheck } from 'lucide-react';
+import { DashboardHeader } from '@/features/dashboard/components/dashboard-header';
 import { TravelReadinessWidget } from '@/features/dashboard/components/travel-readiness-widget';
 
 export default function DashboardPage() {
   return (
-    <div className="flex flex-col gap-6">
+    <div className="flex flex-col gap-6 pb-24">
       {/* App Header */}
-      <header className="flex items-center justify-between bg-white px-4 py-3 shadow-xs">
-        <button className="text-[#1A1A1A] p-1" aria-label="Menu">
-          <Menu className="h-6 w-6" />
-        </button>
-        <div className="text-center">
-          <h1 className="text-lg font-black tracking-tight text-[#008080]">
-            ITravelista PH
-          </h1>
-          <p className="text-[10px] font-medium text-[#6C757D]">From Dreaming to Departing</p>
-        </div>
-        <button className="relative text-[#1A1A1A] p-1" aria-label="Notifications">
-          <Bell className="h-6 w-6" />
-          <span className="absolute top-1 right-1 h-2 w-2 rounded-full bg-[#D0021B]" />
-        </button>
-      </header>
+      <DashboardHeader />
 
       {/* Hero Section */}
       <section className="px-4">
