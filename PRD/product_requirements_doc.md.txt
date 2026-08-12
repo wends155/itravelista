@@ -1,0 +1,923 @@
+# Product Requirements Document (PRD)
+
+**Product:** ITravelista PH
+**Tagline:** From Dreaming to Departing
+**Version:** 2.0
+**Last Updated:** 2026-08-13
+**Status:** MVP Definition Complete
+
+---
+
+## 1. Executive Summary
+
+**ITravelista PH** is a web-first Progressive Web App (PWA) that helps Filipino tourists plan, prepare for, and manage international trips. It consolidates trip planning, visa requirement lookup, budget tracking, and smart checklists into a single mobile-optimized experience — replacing the current fragmented workflow of Facebook groups, spreadsheets, and multiple apps.
+
+The MVP targets validation within a **4–6 week sprint** by a solo full-stack developer, focusing on four core features that prove the value loop: My Trips, Smart Checklist, Budget Planner, and Visa Assistant.
+
+**Platform:** Web-first PWA (mobile-first responsive) → future native mobile via Expo/React Native
+**Monetization:** Free at MVP — validate product-market fit first
+**Target Launch:** Q4 2026
+
+---
+
+## 2. Problem Statement & Opportunity
+
+### The Problem
+
+Filipino tourists planning international trips face a fragmented preparation experience:
+
+- **Visa requirements** are scattered across Facebook groups, embassy websites, and blog posts — often outdated or contradictory
+- **Budget planning** happens in spreadsheets using foreign currencies, with no peso-denominated templates
+- **Pre-trip checklists** live in Notes apps with no smart defaults — first-time travelers don't know what they don't know
+- **Trip management** is split across TripIt (flights), Google Maps (itinerary), spreadsheets (budget), and group chats (coordination)
+
+### The Opportunity
+
+- **No dominant PH-specific travel companion app** exists in the market
+- Filipino outbound tourism is growing 15%+ annually post-pandemic
+- The Philippine passport has specific visa-free/visa-required countries — a focused, curated data set
+- Filipino travel Facebook groups (millions of members) prove massive demand for consolidated travel advice
+- A niche-first approach (PH passport holders → SEA expansion) creates a defensible market position
+
+---
+
+## 3. Target Users & Personas
+
+### Primary Audience
+
+Filipino tourists aged 20–45, digitally active, planning 1–4 international leisure trips per year. English-speaking. Comfortable with mobile apps and online banking.
+
+### Personas
+
+#### Ana — "The First-Timer"
+
+| Attribute | Detail |
+|-----------|--------|
+| **Age / Role** | 26 / Marketing Associate, Manila |
+| **Travel frequency** | First international trip (Japan) |
+| **Pain point** | Overwhelmed by visa requirements — "What documents do I need? Where do I start?" |
+| **Current workflow** | Searching 10+ Facebook posts, saving screenshots, asking friends |
+| **Goal** | A single place that tells her exactly what to prepare and how much to save |
+| **Key features** | Visa Assistant (primary), Smart Checklist, Budget Planner with Japan template |
+
+#### Marco — "The Frequent Traveler"
+
+| Attribute | Detail |
+|-----------|--------|
+| **Age / Role** | 32 / Software Engineer, BGC |
+| **Travel frequency** | 3–4 trips per year |
+| **Pain point** | Uses TripIt + spreadsheet + Notes app — switching between 4 apps per trip |
+| **Current workflow** | Organized but fragmented across multiple tools |
+| **Goal** | Consolidate everything in one app that remembers his patterns |
+| **Key features** | My Trips (primary), Budget Planner, Smart Checklist for efficiency |
+
+#### Jess — "The Group Trip Planner"
+
+| Attribute | Detail |
+|-----------|--------|
+| **Age / Role** | 29 / HR Manager, Makati |
+| **Travel frequency** | 2 trips per year (barkada/friend group trips) |
+| **Pain point** | Group chat is chaos — nobody knows who's done what |
+| **Current workflow** | Google Sheets shared with friends, Viber group for coordination |
+| **Goal** | Track shared responsibilities and budgets for group trips |
+| **MVP solution** | Uses app individually; trip sharing deferred to Phase 2 |
+| **Key features** | Smart Checklist (primary), Budget Planner |
+
+### Non-Target Users (MVP)
+
+- OFWs (Overseas Filipino Workers) — different needs: POEA clearance, OWWA, labor contracts
+- Business travelers — no expense reporting or corporate features
+- Travel agents / professionals — no B2B tools
+- Non-Filipino passport holders — visa data is PH-passport specific
+
+---
+
+## 4. MVP Scope & Phasing Roadmap
+
+### MVP (Phase 1) — Weeks 1–6
+
+| Feature | Description | Priority |
+|---------|-------------|----------|
+| **My Trips** | Create/manage trips with destinations, dates, countdown badges, status tracking | P0 |
+| **Smart Checklist** | Auto-generated + customizable pre-trip checklists per destination | P0 |
+| **Budget Planner** | Peso-denominated budget with category breakdown, donut chart, destination templates | P0 |
+| **Visa Assistant** | Curated visa requirements for top 20 destinations (PH passport) | P0 |
+| **Home Dashboard** | Trip summary, readiness score, quick access links | P0 |
+| **Authentication** | Google OAuth, magic link, email/password, guest mode | P0 |
+| **PWA Shell** | Installable, offline-capable (read-only cache), mobile-first responsive | P0 |
+
+### Phase 2 — Post-MVP Validation
+
+| Feature | Trigger |
+|---------|---------|
+| AI Travel Assistant | Chat-based Q&A with RAG over visa data |
+| Read-only trip sharing | Share trip details via link |
+| Trip cover image upload | Supabase Storage integration |
+| Currency conversion | Live exchange rates for budget entries |
+| Expanded visa data | 50+ destinations |
+
+### Phase 3 — Growth
+
+| Feature | Trigger |
+|---------|---------|
+| Document Vault | Encrypted storage for passport copies, visa documents |
+| Real-time Reminders | Push notifications for deadlines (requires native app) |
+| Expense tracking during trip | Track actual spend vs. budget |
+
+### Phase 4 — Community & Content
+
+| Feature | Trigger |
+|---------|---------|
+| Travel Guides | Curated destination content |
+| Community | Traveler social features, tips sharing |
+| 24/7 Support | In-app help system |
+
+---
+
+## 5. Technical Architecture Summary
+
+> Full details in [architecture.md](./architecture.md)
+
+### Stack
+
+| Layer | Technology |
+|-------|-----------|
+| **Frontend** | Next.js 15+ (App Router) + TypeScript (strict mode) |
+| **Styling** | Tailwind CSS v4 + shadcn/ui (Radix primitives) |
+| **State** | TanStack Query (server state) + Zustand (client state) |
+| **Backend** | Supabase (Postgres + Auth + Storage + Realtime) |
+| **Validation** | Zod schemas at all API boundaries |
+| **Charts** | Recharts or @visx/visx (donut chart) |
+| **PWA** | @serwist/next (service worker + caching) |
+| **Analytics** | Plausible (self-hosted) |
+| **Deployment** | Self-hosted VPS + Coolify (Docker) |
+| **Package Manager** | pnpm |
+
+### Architecture Pattern
+
+Feature-sliced architecture within Next.js App Router. Each feature module (trips, checklist, budget, visa, auth) is self-contained with its own components, hooks, actions, types, and utilities.
+
+### Offline Strategy
+
+- **Static assets**: Cache-first via service worker
+- **API responses**: Network-first with IndexedDB fallback for last-viewed data
+- **Writes**: Online-only for MVP. Clear "You're offline" indicator in UI.
+- **Guest mode**: All data stored in localStorage (no server sync until signup)
+
+---
+
+## 6. Feature Specifications
+
+### 6.1 My Trips
+
+**User story:** As a Filipino tourist, I want to create and manage my upcoming trips so I can see everything in one place with countdown timers.
+
+#### Functional Requirements
+
+| Requirement | Detail |
+|-------------|--------|
+| **Create trip** | Title, destination (country picker with search), start date, end date, cover image (preset destination images) |
+| **Trip card** | Cover image, destination, date range, countdown badge ("X days left"), status pill |
+| **Trip list** | Tabs: Upcoming / Past. Sorted by start date (ascending for upcoming, descending for past) |
+| **Trip detail** | Overview with navigation to Checklist, Budget, and Visa for that trip |
+| **Trip status** | Auto-calculated: `planning` → `upcoming` (within 30 days) → `in_progress` (start_date ≤ today ≤ end_date) → `completed` (past end_date) |
+| **Edit trip** | Modify title, dates, destination. Cannot change destination if checklist has auto-generated items (warn user). |
+| **Delete trip** | Confirmation dialog. Cascades to checklist items and budget entries. |
+| **Empty state** | Illustrated encouragement to create first trip with CTA button |
+| **FAB** | "+ Add New Trip" pill-shaped floating action button, bottom-right anchored |
+
+#### Edge Cases
+
+- Trip with past `end_date` at app load → auto-set status to `completed`
+- No limit on number of trips for MVP (monitor via analytics)
+- Guest users: trips stored in localStorage, migration prompt on signup
+- Duplicate destination in the same date range → allowed (user may have distinct trips)
+
+#### Acceptance Criteria
+
+- [ ] User can create a trip with all required fields
+- [ ] Trip list displays upcoming trips sorted by start_date
+- [ ] Countdown badge shows correct "X days left" calculation
+- [ ] Trip status auto-transitions based on current date
+- [ ] Deleting a trip removes associated checklist items and budget entries
+- [ ] Empty state renders when no trips exist
+
+---
+
+### 6.2 Smart Checklist
+
+**User story:** As a Filipino tourist, I want a pre-filled checklist for my destination so I don't forget any preparation steps.
+
+#### Auto-Generation Logic
+
+When a trip is created, the system generates checklist items from two sources:
+
+1. **Universal items** (applied to every trip):
+   - Passport (valid for 6+ months)
+   - Flight Booking
+   - Hotel/Accommodation Booking
+   - Travel Insurance
+   - Pocket Money / Foreign Currency
+   - Print/Download Itinerary
+
+2. **Destination-specific items** (from visa requirement data):
+   - Visa Application Form (if visa required)
+   - ID Photos (specific dimensions per country)
+   - Proof of Financial Capacity
+   - Certificate of Employment / Business Registration
+   - Invitation Letter (if applicable)
+   - Any country-specific requirements
+
+Items are tagged with `is_auto_generated: true` and assigned appropriate categories.
+
+#### Functional Requirements
+
+| Requirement | Detail |
+|-------------|--------|
+| **Auto-generate** | On trip creation, populate checklist from universal + destination templates |
+| **Manual items** | User can add, edit, and delete custom items |
+| **Status tracking** | Three states: `todo` → `in_progress` → `completed`. Toggle via checkbox. |
+| **Filter tabs** | All / To Do / In Progress / Completed (pill-shaped horizontal scroll) |
+| **Progress indicator** | "X/Y completed" with percentage text and progress bar |
+| **Categories** | `documents`, `booking`, `insurance`, `money`, `general` — icon + color per category |
+| **Sort order** | Default: auto-generated first (by category), then manual items. Future: drag-to-reorder. |
+| **View All** | Bottom CTA to expand collapsed items |
+
+#### Auto-Generation Template Format
+
+```json
+{
+  "country_code": "JP",
+  "country_name": "Japan",
+  "items": [
+    {
+      "title": "Passport (valid for 6+ months)",
+      "category": "documents",
+      "description": "Must be valid 6 months beyond your planned travel dates"
+    },
+    {
+      "title": "Visa Application Form",
+      "category": "documents",
+      "description": "Download from the Japanese Embassy Manila website"
+    },
+    {
+      "title": "2x2 Photo (4.5cm × 4.5cm)",
+      "category": "documents",
+      "description": "White background, taken within last 6 months"
+    },
+    {
+      "title": "Flight Booking Confirmation",
+      "category": "booking"
+    },
+    {
+      "title": "Hotel Reservation",
+      "category": "booking"
+    },
+    {
+      "title": "Travel Insurance",
+      "category": "insurance",
+      "description": "Coverage for the full duration of stay"
+    },
+    {
+      "title": "Proof of Financial Capacity",
+      "category": "documents",
+      "description": "Bank certificate or 3 months bank statements"
+    },
+    {
+      "title": "Certificate of Employment",
+      "category": "documents",
+      "description": "With compensation and approved leave dates"
+    },
+    {
+      "title": "Daily Budget in JPY",
+      "category": "money",
+      "description": "Recommended: ¥8,000–12,000/day"
+    },
+    {
+      "title": "Day-by-Day Itinerary",
+      "category": "documents",
+      "description": "Detailed plan with addresses and contact numbers"
+    }
+  ]
+}
+```
+
+#### Acceptance Criteria
+
+- [ ] Creating a trip auto-generates destination-specific checklist items
+- [ ] Auto-generated items are marked and cannot accidentally override manual items
+- [ ] User can add custom items alongside auto-generated ones
+- [ ] Status toggles persist across sessions
+- [ ] Filter tabs correctly filter by status
+- [ ] Progress percentage updates in real-time on check/uncheck
+
+---
+
+### 6.3 Budget Planner
+
+**User story:** As a Filipino tourist, I want to plan my trip budget in pesos with a clear breakdown by category so I know how much to save.
+
+#### Functional Requirements
+
+| Requirement | Detail |
+|-------------|--------|
+| **Total budget** | Large ₱ amount displayed prominently (H1 typography) |
+| **Category breakdown** | Six categories: Flights, Accommodation, Food, Transportation, Activities, Other |
+| **Donut chart** | SVG component, ~150px diameter, stroke-width ~20px, segments proportional to category amounts |
+| **Legend** | Colored dot (8px) + category name + absolute ₱ amount + percentage (right-aligned) |
+| **Add entry** | Category picker (dropdown), label text field, amount input (₱) |
+| **Edit/Delete entry** | Swipe or action menu on each entry |
+| **Edit Budget** | "Edit Budget" text link (teal, 14px) in header for modifying entries |
+| **Destination templates** | One-tap template application that pre-fills budget entries |
+| **Total calculation** | Auto-sum of all entries. Updates in real-time. |
+| **View Details** | Bottom CTA to see full entry-level breakdown |
+
+#### Destination Budget Templates (MVP — Top 15)
+
+| Destination | Duration | Total (₱) | Flights | Accommodation | Food | Transport | Activities | Other |
+|-------------|----------|-----------|---------|---------------|------|-----------|------------|-------|
+| Japan | 7 days | 80,000 | 28,000 | 20,000 | 12,000 | 8,000 | 7,000 | 5,000 |
+| South Korea | 5 days | 50,000 | 18,000 | 12,000 | 8,000 | 5,000 | 4,000 | 3,000 |
+| Singapore | 3 days | 35,000 | 10,000 | 12,000 | 6,000 | 3,000 | 2,500 | 1,500 |
+| Thailand | 5 days | 30,000 | 10,000 | 7,000 | 5,000 | 3,000 | 3,000 | 2,000 |
+| Hong Kong | 4 days | 40,000 | 8,000 | 15,000 | 8,000 | 4,000 | 3,000 | 2,000 |
+| Taiwan | 5 days | 40,000 | 12,000 | 10,000 | 7,000 | 4,000 | 4,500 | 2,500 |
+| Vietnam | 5 days | 25,000 | 8,000 | 5,000 | 4,000 | 3,000 | 3,000 | 2,000 |
+| Malaysia | 4 days | 25,000 | 8,000 | 6,000 | 4,000 | 3,000 | 2,500 | 1,500 |
+| Indonesia (Bali) | 5 days | 35,000 | 10,000 | 8,000 | 5,000 | 4,000 | 5,000 | 3,000 |
+| Cambodia | 4 days | 20,000 | 8,000 | 4,000 | 3,000 | 2,000 | 2,000 | 1,000 |
+| UAE (Dubai) | 5 days | 80,000 | 25,000 | 20,000 | 12,000 | 8,000 | 10,000 | 5,000 |
+| Australia | 7 days | 120,000 | 35,000 | 30,000 | 20,000 | 12,000 | 15,000 | 8,000 |
+| USA | 7 days | 150,000 | 40,000 | 35,000 | 25,000 | 15,000 | 20,000 | 15,000 |
+| UK | 7 days | 130,000 | 40,000 | 30,000 | 22,000 | 13,000 | 15,000 | 10,000 |
+| Turkey | 7 days | 60,000 | 25,000 | 10,000 | 8,000 | 5,000 | 7,000 | 5,000 |
+
+> **Note:** Template amounts are averages for a budget-conscious Filipino traveler. Users can modify all amounts after applying a template.
+
+#### Chart Color Palette
+
+| Category | Color | Hex |
+|----------|-------|-----|
+| Flights | Blue | `#4A90E2` |
+| Accommodation | Teal | `#008080` |
+| Food | Yellow/Orange | `#F5A623` |
+| Transportation | Red/Pink | `#D0021B` |
+| Activities | Purple | `#7B61FF` |
+| Other | Gray | `#9B9B9B` |
+
+#### Acceptance Criteria
+
+- [ ] Donut chart renders correctly with proportional segments
+- [ ] Adding/editing/deleting entries recalculates total and chart in real-time
+- [ ] Applying a destination template pre-fills all category entries
+- [ ] Template can be applied to empty budget or overwrite existing (with confirmation)
+- [ ] All amounts displayed in PHP (₱) with proper formatting (thousands separator)
+- [ ] Budget entries persist across sessions
+
+---
+
+### 6.4 Visa Assistant
+
+**User story:** As a Filipino passport holder, I want to see exactly what documents and steps I need for a visa so I don't miss anything.
+
+#### Functional Requirements
+
+| Requirement | Detail |
+|-------------|--------|
+| **Country selector** | Pill-shaped dropdown with search. Displays visa type badge (visa-free, VOA, e-visa, embassy visa). |
+| **Progress stepper** | 4 horizontal steps: Requirements → Documents → Apply → Done. Connected by lines. Active step is teal. |
+| **Requirements list** | Scrollable list. Each item: checkmark icon (16px, teal when completed), title text, optional description. |
+| **Completion tracking** | User can check off requirements. Progress persists per destination per user. |
+| **Processing time** | Display estimated processing time (e.g., "5–7 business days") |
+| **Fees** | Display visa fees with currency (e.g., "¥3,000 / ~₱1,200") |
+| **Start Application** | CTA button linking to official embassy/consulate website or e-visa portal |
+| **Last verified date** | Transparency badge: "Last verified: August 2026" |
+| **Disclaimer** | Footer text: "Requirements may change. Always verify with the official embassy or consulate." |
+| **Add to Checklist** | "Add to my trip checklist" button that copies visa requirements into an existing trip's checklist |
+| **Bottom progress** | Fixed bottom bar: progress bar (4px) + "X/Y completed" + "Start Application" CTA |
+
+#### Data Source
+
+Statically curated JSON files per destination, manually researched and verified against official embassy sources. Updated periodically by the developer.
+
+#### Initial Destination Coverage (Top 20 for PH Passport)
+
+| # | Country | Visa Type | Priority |
+|---|---------|-----------|----------|
+| 1 | Japan | Embassy Visa | P0 — #1 destination for Filipinos |
+| 2 | South Korea | Embassy Visa / K-ETA | P0 |
+| 3 | Singapore | Visa-free (30 days) | P0 |
+| 4 | Thailand | Visa-free (30 days) | P0 |
+| 5 | Hong Kong | Visa-free (14 days) | P0 |
+| 6 | Taiwan | E-Visa | P0 |
+| 7 | Malaysia | Visa-free (30 days) | P0 |
+| 8 | Vietnam | E-Visa | P0 |
+| 9 | Indonesia | Visa-free / VOA | P0 |
+| 10 | Cambodia | Visa on Arrival / E-Visa | P0 |
+| 11 | UAE | Embassy Visa | P1 |
+| 12 | Saudi Arabia | E-Visa (Umrah/Tourism) | P1 |
+| 13 | Turkey | E-Visa | P1 |
+| 14 | India | E-Visa | P1 |
+| 15 | USA | Embassy Visa (B1/B2) | P1 |
+| 16 | Canada | Embassy Visa | P1 |
+| 17 | Australia | E-Visa (ETA/Subclass 600) | P1 |
+| 18 | UK | Embassy Visa | P1 |
+| 19 | Schengen (France) | Embassy Visa | P1 |
+| 20 | New Zealand | Embassy Visa | P1 |
+
+> P0 = Ship at MVP launch (top 10). P1 = Add within first month post-launch.
+
+#### Visa Data Schema
+
+```json
+{
+  "country_code": "JP",
+  "country_name": "Japan",
+  "visa_type": "embassy_visa",
+  "visa_type_label": "Embassy Visa Required",
+  "requirements": [
+    {
+      "item": "Valid Passport",
+      "description": "Must be valid for at least 6 months beyond intended stay. At least 2 blank pages.",
+      "required": true
+    },
+    {
+      "item": "Completed Visa Application Form",
+      "description": "Download from the Embassy of Japan in Manila website.",
+      "required": true
+    },
+    {
+      "item": "2x2 Photo (4.5cm × 4.5cm)",
+      "description": "White background, taken within the last 6 months. Matte finish.",
+      "required": true
+    },
+    {
+      "item": "Birth Certificate (PSA)",
+      "description": "Original PSA-issued birth certificate.",
+      "required": true
+    },
+    {
+      "item": "Proof of Financial Capacity",
+      "description": "Bank certificate dated within 1 month + 3 months bank statements.",
+      "required": true
+    },
+    {
+      "item": "Certificate of Employment",
+      "description": "On company letterhead. Must include position, salary, and approved leave dates.",
+      "required": true
+    },
+    {
+      "item": "Daily Schedule / Itinerary",
+      "description": "Detailed day-by-day plan with hotel names, addresses, and contact numbers.",
+      "required": true
+    },
+    {
+      "item": "Confirmed Flight Booking",
+      "description": "Round-trip ticket or confirmed reservation.",
+      "required": true
+    },
+    {
+      "item": "Hotel Reservation",
+      "description": "Confirmed booking for the entire duration of stay.",
+      "required": true
+    },
+    {
+      "item": "Income Tax Return (ITR)",
+      "description": "Latest ITR filed with BIR.",
+      "required": false
+    }
+  ],
+  "processing_time": "5–7 business days",
+  "fees": {
+    "currency": "PHP",
+    "amount": 1200,
+    "notes": "Single-entry tourist visa"
+  },
+  "embassy_url": "https://www.ph.emb-japan.go.jp/itpr_en/visa.html",
+  "last_verified": "2026-08-01"
+}
+```
+
+#### Acceptance Criteria
+
+- [ ] Country selector shows all available destinations with visa type badges
+- [ ] Requirements list renders all items from curated data
+- [ ] User can check off completed requirements (persisted)
+- [ ] Progress stepper updates based on completion percentage
+- [ ] "Start Application" opens official embassy link in new tab
+- [ ] "Last verified" date displays correctly
+- [ ] "Add to my trip checklist" copies requirements to selected trip's checklist
+
+---
+
+### 6.5 Home Dashboard
+
+**User story:** As a user, I want a quick overview of my travel readiness and upcoming trips so I can see what needs attention.
+
+#### Functional Requirements (MVP)
+
+| Component | Detail |
+|-----------|--------|
+| **Header** | Hamburger menu (left), notification placeholder icon (right), app logo and tagline |
+| **Hero section** | Destination search (placeholder for MVP — navigates to Visa Assistant country picker) with background image |
+| **Travel Readiness widget** | Floating card overlapping hero. Donut chart with overall readiness % (aggregate checklist completion across upcoming trips). "Trips" count + "Documents" saved count. "View Checklist" CTA. |
+| **Quick Access grid** | 4 icons: Visa Assistant, Document Vault (disabled/placeholder), Budget Planner, Travel Guides (disabled/placeholder) |
+| **Bottom navigation** | 5 tabs: Home, My Trips, Checklist (→ trip picker), Assistant (disabled/placeholder), Profile |
+
+#### Travel Readiness Calculation
+
+```
+readiness_score = (total_completed_checklist_items / total_checklist_items) × 100
+```
+
+Across all upcoming trips. If no trips exist, show 0% with an encouragement message.
+
+#### Acceptance Criteria
+
+- [ ] Readiness widget shows correct aggregate percentage
+- [ ] Quick access icons navigate to correct features
+- [ ] Disabled features show "Coming Soon" tooltip
+- [ ] Bottom navigation highlights current tab
+- [ ] Dashboard is the landing page after login
+
+---
+
+### 6.6 Authentication
+
+**User story:** As a new user, I want to sign up quickly so I can start planning my trip without friction.
+
+#### Supported Methods
+
+| Method | Flow | Priority |
+|--------|------|----------|
+| **Google OAuth** | One-tap Google sign-in via Supabase Auth | P0 |
+| **Magic Link** | Enter email → receive login link → click to authenticate | P0 |
+| **Email + Password** | Traditional signup/login with email verification | P0 |
+| **Guest Mode** | Skip login → use app with local storage only → prompt to sign up for sync | P0 |
+
+#### Guest Mode Behavior
+
+- All data stored in localStorage (trips, checklist items, budget entries)
+- Banner at top: "Sign up to save your data across devices"
+- On signup: migrate localStorage data to Supabase account
+- On browser cache clear: data is lost (warn user)
+
+#### Auth UI Screens
+
+| Screen | Elements |
+|--------|----------|
+| **Login** | App logo, tagline, Google button, magic link input, email/password fields, "Continue as Guest" link |
+| **Signup** | Same as login with password confirmation. Terms & privacy policy checkbox. |
+| **Magic Link Sent** | Confirmation illustration, "Check your email" message, "Resend" link |
+
+#### Acceptance Criteria
+
+- [ ] Google OAuth completes full sign-in flow
+- [ ] Magic link sends email and authenticates on click
+- [ ] Email/password with validation (min 8 chars, email format)
+- [ ] Guest mode stores data in localStorage
+- [ ] Guest-to-authenticated migration preserves all data
+- [ ] Session persists across browser sessions (refresh token)
+
+---
+
+## 7. Global Design System
+
+### 7.1 Color Palette
+
+| Token | Value | Usage |
+|-------|-------|-------|
+| **Primary (Brand)** | Deep Teal `#008080` | CTAs, active states, checkboxes, progress bars, links |
+| **Primary Hover** | `#006B6B` | Button hover states |
+| **Primary Light** | `#E0F2F1` | Icon backgrounds, selected tab backgrounds |
+| **Background App** | Off-White `#F8F9FA` | App-wide background |
+| **Background Card** | Pure White `#FFFFFF` | Card surfaces, modals |
+| **Text Primary** | Dark Charcoal `#1A1A1A` | Headlines, body text |
+| **Text Secondary** | Slate Gray `#6C757D` | Subtitles, captions, metadata |
+| **Text Tertiary** | Light Gray `#ADB5BD` | Placeholder text, disabled states |
+| **Border** | `#E0E0E0` | Dividers, input borders |
+| **Success** | Green `#28A745` | Completed states, success messages |
+| **Warning** | Amber `#F5A623` | Warnings, pending states |
+| **Error** | Red `#D0021B` | Error messages, destructive actions |
+| **Flights** | Blue `#4A90E2` | Budget chart segment |
+| **Activities** | Purple `#7B61FF` | Budget chart segment |
+| **Neutral** | Gray `#9B9B9B` | Budget chart "Other" segment |
+
+### 7.2 Typography
+
+**Font Family:** Inter (primary) or Roboto (fallback) — loaded via Google Fonts or `next/font`
+
+| Token | Size | Weight | Usage |
+|-------|------|--------|-------|
+| **H1** | 24–28px | Bold (700) | Screen titles, large metrics ("₱80,000") |
+| **H2** | 18–20px | Semi-Bold (600) | Card titles, section headers |
+| **Body** | 14–16px | Regular (400) | List items, paragraphs, chat text |
+| **Caption** | 12px | Regular (400) / Medium (500) | Metadata, tab labels, timestamps |
+| **Overline** | 10px | Medium (500), uppercase | Category labels, badges |
+
+### 7.3 Spacing & Layout
+
+| Token | Value | Usage |
+|-------|-------|-------|
+| **Base unit** | 8px | All spacing is multiples of 8px |
+| **Screen padding** | 16–20px | Global horizontal margins |
+| **Card padding** | 16px | Inner padding of card components |
+| **Component gap** | 8px / 12px / 16px | Between elements within components |
+| **Section gap** | 24px | Between major page sections |
+
+### 7.4 Border Radius
+
+| Token | Value | Usage |
+|-------|-------|-------|
+| **Pill** | 24px | Buttons, filter tabs, badges |
+| **Card** | 12–16px | Cards, images, modals |
+| **Input** | 8px | Text inputs, dropdowns |
+| **Checkbox** | 4px | Checkbox, small elements |
+
+### 7.5 Elevation & Shadows
+
+| Level | Value | Usage |
+|-------|-------|-------|
+| **Card** | `0 4px 12px rgba(0,0,0,0.08)` | Floating cards, travel readiness widget |
+| **Modal** | `0 8px 24px rgba(0,0,0,0.12)` | Modals, bottom sheets |
+| **FAB** | `0 4px 16px rgba(0,0,0,0.15)` | Floating action button |
+| **Bottom Nav** | `0 -2px 8px rgba(0,0,0,0.06)` | Fixed bottom navigation |
+
+---
+
+## 8. Screen-by-Screen UI Specifications
+
+### 8.1 Home Screen (Dashboard) — MVP
+
+- **Header:** Flex-row. Hamburger menu (left, 24×24px). Notification bell with unread dot (right, 24×24px). Top padding for safe area.
+- **Hero Section:** Image background with bottom-rounded corners. Search Input: H 48px, white bg, 16px radius, subtle shadow. Centered placeholder text "Search destination or country".
+- **Travel Readiness Widget (Floating Card):** Overlaps hero bottom edge (negative top margin). Grid: Left = SVG donut (stroke 8px). Right = Flex-col "Trips" count + "Documents" count. "View Checklist" pill CTA.
+- **Quick Access Grid:** 4×1 horizontal row. 48×48px icon containers (light teal bg, dark teal icon). 12px caption below.
+- **Bottom Navigation:** 5 tabs: Home (active), My Trips, Checklist, Assistant (disabled), Profile. Active = teal icon + text. Inactive = gray icon + text.
+
+### 8.2 Visa Assistant Screen — MVP
+
+- **Visa Selector:** Pill-shaped dropdown. H 36px. Trailing chevron. Red indicator dot (6×6px) for active status.
+- **Progress Stepper:** Flex-row. 4 circular nodes (24×24px). Connecting lines (2px). Active = teal, inactive = gray.
+- **Requirements List:** ScrollView. Row height ~44px. Leading icon: 16×16px checkmark circle (teal for completed). Divider: 1px `#E0E0E0`.
+- **Bottom Container:** Fixed bottom, white bg, top shadow. Progress bar (4px, full-width). CTA "Start Application": H 50px, 100% width, teal bg, white text, pill radius.
+
+### 8.3 Smart Checklist Screen — MVP
+
+- **Trip Header:** Trip name + "X days left" badge.
+- **Filter Tabs:** Horizontal scroll. Pill containers. Active: teal bg, white text. Inactive: transparent, gray text, 1px gray border.
+- **Task List Items:** Flex-row, space-between. Padding 12px 0. Left: 24×24px category icon (light gray bg) + Flex-col (Task Name 16px + Status 12px gray). Right: 24×24px checkbox.
+- **Bottom CTA:** "View All" pill button.
+
+### 8.4 Budget Planner Screen — MVP
+
+- **Header:** Trip name. "Edit Budget" text button (teal, 14px) right-aligned.
+- **Total Budget:** H1 typography. 24px bottom margin. "Total Budget" caption above.
+- **Donut Chart:** SVG, W/H ~150px, stroke-width ~20px. Segments from category percentages.
+- **Legend List:** Flex-col. Each row: colored dot (8×8px rounded) + Category Name (flex-1) + ₱ Amount + Percentage (gray, right-aligned).
+- **Bottom CTA:** "View Details" pill button.
+
+### 8.5 My Trips Screen — MVP
+
+- **Tabs:** Upcoming / Past (pill toggle at top).
+- **Trip Cards:** H ~200px, W 100%. Margin-bottom 16px. Border-radius 16px, `overflow: hidden`. ImageBackground with linear gradient overlay (dark bottom → transparent top). Content absolute-positioned bottom-left. Countdown badge: floating translucent card.
+- **FAB:** "+ Add New Trip" pill button, anchored bottom-right.
+
+### 8.6 AI Travel Assistant Screen — Post-MVP (Phase 2)
+
+- **Chat Viewport:** Inverted FlatList. Bot message: bg `#F1F3F5`, radius 16px (bottom-left 4px). User message: bg teal, radius 16px (bottom-right 4px), white text.
+- **Input Area:** Fixed bottom. Rounded pill input, gray bg `#F1F3F5`. Trailing mic + send icons.
+
+> **MVP placeholder:** Show "Coming Soon — AI Travel Assistant" card with illustration.
+
+---
+
+## 9. Data Model Summary
+
+> Full schema in [architecture.md](./architecture.md) § Data Model
+
+| Entity | Key Fields | Relationships |
+|--------|------------|---------------|
+| **user** | id, email, display_name, auth_provider | 1:N → trip |
+| **trip** | id, user_id, title, destination, country_code, start_date, end_date, status | 1:N → checklist_item, 1:N → budget_entry |
+| **checklist_item** | id, trip_id, title, status, category, is_auto_generated, sort_order | N:1 → trip |
+| **budget_entry** | id, trip_id, category, label, amount, currency | N:1 → trip |
+| **budget_template** | id, destination, duration_days, entries (JSONB) | Read-only seed data |
+| **visa_requirement** | id, country_code, visa_type, requirements (JSONB), fees, last_verified | Read-only seed data |
+
+All tables use UUID primary keys, `created_at` / `updated_at` timestamps, and Row Level Security (RLS) to ensure users can only access their own data.
+
+---
+
+## 10. Non-Functional Requirements
+
+### Performance
+
+| Metric | Target |
+|--------|--------|
+| First Contentful Paint (FCP) | < 1.5s |
+| Time to Interactive (TTI) | < 3.0s |
+| Lighthouse Performance Score | > 90 |
+| Lighthouse Accessibility Score | > 90 |
+| Supabase query latency (p95) | < 200ms |
+| Bundle size (initial JS) | < 150KB gzipped |
+
+### Security
+
+- All authentication via Supabase (OAuth2, PKCE flow)
+- Row Level Security (RLS) on every user-facing table
+- No PII in client-side logs or analytics events
+- HTTPS everywhere (Coolify handles TLS via Let's Encrypt)
+- Content Security Policy (CSP) headers
+- `SUPABASE_SERVICE_ROLE_KEY` never exposed to client
+
+### Accessibility
+
+- WCAG 2.1 AA compliance (target, best-effort for MVP)
+- All interactive elements keyboard-navigable
+- Proper `aria-labels` on custom components (checkboxes, tabs, modals)
+- Color contrast ratio ≥ 4.5:1 for all text
+- Focus indicators on all interactive elements
+- Screen reader-compatible navigation
+
+### Offline
+
+- Service worker caches static assets (cache-first)
+- Last-viewed trip data cached in IndexedDB (network-first with fallback)
+- Clear offline indicator: banner with "You're offline — showing cached data"
+- Writes blocked offline with user-friendly message
+- PWA installable on Android and iOS home screens
+
+### Internationalization
+
+- **Language:** English only for MVP
+- **Currency:** PHP (₱) as default display. ISO 4217 codes stored in database.
+- **Date format:** Locale-aware display (e.g., "May 10 – May 20, 2026")
+- **i18n-ready:** Use string constants/keys (not hardcoded strings) to ease future Tagalog translation
+
+---
+
+## 11. Testing Strategy
+
+### Approach: Inverted Diamond
+
+Optimized for a solo developer — maximum confidence per hour invested.
+
+| Layer | Tool | Priority | Coverage Target |
+|-------|------|----------|-----------------|
+| **TypeScript strict + Zod** | Compiler + runtime schemas | P0 — always on | 100% of API boundaries |
+| **Unit tests (pure logic)** | Vitest | P0 | 80%+ for utils, calculations, template generation |
+| **E2E tests (critical flows)** | Playwright | P0 | 3–5 core user journeys |
+| **RLS policy tests** | Integration tests against local Supabase | P0 | All tables — verify data isolation |
+| **Component tests** | Skip for MVP | — | — |
+| **Visual regression** | Skip for MVP | — | — |
+
+### Critical E2E Flows
+
+1. **Signup → Create trip → View dashboard** — core onboarding
+2. **Create trip → Auto-generate checklist → Check items** — checklist value loop
+3. **Create trip → Apply budget template → Edit entries** — budget value loop
+4. **Browse visa requirements → Check off items → "Add to checklist"** — visa flow
+5. **Guest mode → Create trip → Signup → Data migration** — guest conversion
+
+### Verification Pipeline
+
+```
+pnpm type-check    # TypeScript strict
+pnpm lint          # ESLint
+pnpm format:check  # Prettier
+pnpm test          # Vitest (unit)
+pnpm build         # Production build (catches SSR errors)
+```
+
+---
+
+## 12. Success Metrics & KPIs
+
+### 30-Day Targets
+
+| Metric | Target | Measurement |
+|--------|--------|-------------|
+| **Signups** | 200+ | Supabase Auth count |
+| **Trips created** | 50+ | Database count |
+| **Checklist engagement** | 40% of trips have ≥3 items checked | Query |
+| **PWA install rate** | > 15% of visitors | Plausible `pwa_installed` event |
+| **Visa Assistant views** | 100+ unique country views | Plausible `visa_viewed` event |
+
+### 60-Day Targets
+
+| Metric | Target | Measurement |
+|--------|--------|-------------|
+| **Total signups** | 500+ | Supabase Auth |
+| **7-day retention** | 30% | Plausible returning visitors |
+| **Multi-trip users** | 20% create 2+ trips | Query |
+| **Budget template usage** | 50% of budgets use a template | Plausible `budget_template_applied` |
+
+### 90-Day Targets
+
+| Metric | Target | Measurement |
+|--------|--------|-------------|
+| **Total signups** | 1,000+ | Supabase Auth |
+| **30-day retention** | 15% | Plausible |
+| **NPS** | > 30 | In-app survey (post-trip) |
+| **Top feature by usage** | Visa Assistant or Smart Checklist | Plausible events |
+| **Guest → signup conversion** | > 25% | Analytics funnel |
+
+### Plausible Custom Events
+
+| Event | Trigger |
+|-------|---------|
+| `trip_created` | User creates a new trip |
+| `checklist_generated` | Auto-generated checklist for a destination |
+| `checklist_item_completed` | Individual item checked off |
+| `checklist_completed` | All items in a trip checked off |
+| `budget_set` | User creates first budget entry for a trip |
+| `budget_template_applied` | User applies a destination template |
+| `visa_viewed` | User views visa requirements for a country |
+| `visa_requirement_checked` | User checks off a visa requirement |
+| `visa_add_to_checklist` | User copies visa items to trip checklist |
+| `auth_signup` | New user registration (any method) |
+| `auth_guest_start` | User enters guest mode |
+| `auth_guest_convert` | Guest user signs up |
+| `pwa_installed` | PWA added to home screen |
+| `search_destination` | User searches in the hero search bar |
+
+---
+
+## 13. Competitive Landscape
+
+| App | Category | Strengths | Gaps vs. ITravelista |
+|-----|----------|-----------|---------------------|
+| **TripIt** | Trip organizer | Auto-parses booking emails, flight tracking | No visa help, no PH focus, no peso budget, $49/yr premium |
+| **Google Travel** | Trip organizer | Free, Gmail integration, flight/hotel auto-import | No visa data, no checklist, no budget planner, no offline |
+| **Wanderlog** | Trip planner | Beautiful map-based planning, collaborative | No visa help, no PH-specific content, US-centric |
+| **Traveloka** | Booking | Strong SEA booking, localized for PH | Booking-only — no trip management, no checklist, no visa tools |
+| **Klook** | Activity booking | Excellent activity discovery in Asia | Booking-only — no planning tools |
+| **Facebook Groups** | Community | Massive PH travel community, real user experiences | Fragmented, unsearchable, info quality varies, no tools |
+| **Spreadsheets** | DIY | Fully customizable | No smart defaults, no visa data, manual everything |
+
+### ITravelista's Competitive Moat
+
+1. **PH-passport-specific visa data** — curated, verified, one-click checklists
+2. **Peso-denominated budget templates** — no currency conversion guesswork
+3. **Smart auto-generated checklists** — users don't need to know what they don't know
+4. **Single integrated experience** — replaces 4+ tools with one PWA
+
+---
+
+## 14. Risks & Mitigations
+
+| Risk | Severity | Likelihood | Mitigation |
+|------|----------|------------|------------|
+| **Visa data becomes stale** | High | Medium | Display "Last verified" dates. Link to official sources. Disclaimer on every page. Schedule monthly review. |
+| **Low retention (travel is episodic)** | High | High | Add "dream trip" mode for aspirational planning. Budget savings tracker. Travel countdown widget for home screen. |
+| **PWA limitations on iOS** | Medium | Certain | No push notifications on iOS PWA. Accept for MVP. Mitigate with email reminders. Native app in Phase 3. |
+| **Feature scope creep** | High | High | Strict 4-feature MVP. All requests go to post-MVP backlog. No exceptions during sprint. |
+| **Solo dev bottleneck** | Medium | Certain | Leverage shadcn/ui, Supabase, Coolify. Minimize custom code. Use AI pair-programming. |
+| **Security breach (user data)** | High | Low | RLS on every table. No document storage at MVP (Phase 3). Supabase handles auth security. |
+| **AI hallucination in visa advice** | High | N/A (MVP) | Not applicable — MVP uses static curated data only. AI deferred to Phase 2 with guardrails. |
+| **App store rejection (future)** | Medium | Low | PWA-first strategy avoids this entirely. Native app when ready. |
+
+---
+
+## 15. Open Questions & Decision Log
+
+### Resolved Decisions
+
+| # | Question | Decision | Date |
+|---|----------|----------|------|
+| 1 | Target user: tourists vs OFWs? | Filipino tourists traveling abroad | 2026-08-12 |
+| 2 | Platform: mobile-native vs web? | Web-first PWA, mobile-first responsive | 2026-08-12 |
+| 3 | Frontend framework? | Next.js (React) — aligns with future Expo/RN migration | 2026-08-12 |
+| 4 | Backend? | Supabase (Postgres + Auth + Storage) | 2026-08-12 |
+| 5 | Offline strategy? | Hybrid — read-only cache, online writes | 2026-08-12 |
+| 6 | Visa data source? | Static curated JSON for top 20–30 destinations | 2026-08-12 |
+| 7 | Checklist behavior? | Hybrid auto-generation from destination + user customization | 2026-08-12 |
+| 8 | Budget approach? | Manual entry + preset destination templates | 2026-08-12 |
+| 9 | Collaboration? | Single-user only for MVP | 2026-08-12 |
+| 10 | Monetization? | Free at MVP — validate first | 2026-08-12 |
+| 11 | Auth methods? | Google OAuth + Magic link + Email/password + Guest mode | 2026-08-12 |
+| 12 | Deployment? | Self-hosted VPS + Coolify | 2026-08-12 |
+| 13 | Styling? | Tailwind CSS v4 + shadcn/ui | 2026-08-12 |
+| 14 | State management? | TanStack Query + Zustand | 2026-08-12 |
+| 15 | Testing approach? | Inverted diamond — TS strict + E2E + unit for logic + RLS tests | 2026-08-12 |
+| 16 | Analytics? | Plausible (self-hosted) | 2026-08-12 |
+
+### Open Questions
+
+| # | Question | Impact | Status |
+|---|----------|--------|--------|
+| 1 | Which VPS provider? (DigitalOcean vs Hetzner vs Contabo) | Deployment cost | Pending |
+| 2 | Domain name secured? (itravelista.ph / itravelistaph.com) | Branding, SEO | Pending |
+| 3 | Budget template amounts — need validation from travel community | Budget accuracy | Pending |
+| 4 | Visa data for Schengen — per-country or unified? | Data structure | Pending |
+| 5 | Trip cover images — license-free source? (Unsplash API vs pre-bundled) | Legal, bundle size | Pending |
+| 6 | Philippine Data Privacy Act compliance — NPC registration needed? | Legal compliance | Pending |
+
+---
+
+## Appendix A: Reference Mockup
+
+Original design mockup: `PRD/prd-desccription.jpeg`
+
+The mockup serves as the visual north star for the design system and screen layouts. All pixel-level specifications in Section 8 are derived from this mockup.

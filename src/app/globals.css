@@ -1,0 +1,69 @@
+@import "tailwindcss";
+
+:root {
+  /* Core Palette */
+  --brand-primary: #008080;
+  --brand-hover: #006b6b;
+  --brand-light: #e0f2f1;
+  --bg-app: #f8f9fa;
+  --bg-card: #ffffff;
+
+  /* Text Colors */
+  --text-primary: #1a1a1a;
+  --text-secondary: #6c757d;
+  --text-tertiary: #adb5bd;
+  --border-color: #e0e0e0;
+
+  /* Semantic Colors */
+  --semantic-success: #28a745;
+  --semantic-warning: #f5a623;
+  --semantic-error: #d0021b;
+
+  /* Chart Colors */
+  --chart-flights: #4a90e2;
+  --chart-accommodation: #008080;
+  --chart-food: #f5a623;
+  --chart-transport: #d0021b;
+  --chart-activities: #7b61ff;
+  --chart-other: #9b9b9b;
+
+  /* CSS variables mapping */
+  --background: var(--bg-app);
+  --foreground: var(--text-primary);
+}
+
+@theme inline {
+  --color-brand: var(--brand-primary);
+  --color-brand-hover: var(--brand-hover);
+  --color-brand-light: var(--brand-light);
+  --color-app-bg: var(--bg-app);
+  --color-card-bg: var(--bg-card);
+
+  --color-text-primary: var(--text-primary);
+  --color-text-secondary: var(--text-secondary);
+  --color-text-tertiary: var(--text-tertiary);
+  --color-border-custom: var(--border-color);
+
+  --color-chart-flights: var(--chart-flights);
+  --color-chart-accommodation: var(--chart-accommodation);
+  --color-chart-food: var(--chart-food);
+  --color-chart-transport: var(--chart-transport);
+  --color-chart-activities: var(--chart-activities);
+  --color-chart-other: var(--chart-other);
+
+  --shadow-card-custom: 0 4px 12px rgba(0, 0, 0, 0.08);
+  --shadow-modal-custom: 0 8px 24px rgba(0, 0, 0, 0.12);
+  --shadow-fab-custom: 0 4px 16px rgba(0, 0, 0, 0.15);
+  --shadow-bottomnav-custom: 0 -2px 8px rgba(0, 0, 0, 0.06);
+
+  --radius-pill-custom: 24px;
+  --radius-card-custom: 16px;
+}
+
+body {
+  background-color: var(--bg-app);
+  color: var(--text-primary);
+  font-family: var(--font-sans, system-ui, -apple-system, sans-serif);
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+}
