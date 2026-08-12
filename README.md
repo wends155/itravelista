@@ -1,36 +1,99 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# ✈️ ITravelista PH
 
-## Getting Started
+> **From Dreaming to Departing** — The all-in-one travel companion built specifically for Filipino tourists traveling internationally.
 
-First, run the development server:
+---
+
+## 🌟 Key Features
+
+1. **🗺️ My Trips**: Plan, organize, and track international trips with countdown badges and status tracking.
+2. **✅ Smart Checklist**: Auto-generate pre-trip checklists based on destination visa requirements with optimistic completion toggles.
+3. **💰 Budget Planner**: Peso-denominated (PHP ₱) travel budget calculator featuring 15 destination preset templates and custom SVG donut chart breakdown.
+4. **🛂 Visa Assistant**: Curated, step-by-step visa requirement guides and document check-off lists for PH passport holders (Japan, Korea, Singapore, Thailand, Hong Kong, Taiwan, and more).
+5. **📊 Travel Readiness Dashboard**: Real-time aggregate readiness score gauge tracking document completion across active trips.
+
+---
+
+## 🛠️ Technology Stack
+
+| Layer | Technology |
+|---|---|
+| **Framework** | Next.js 15+ (App Router, Turbopack, React 19, TypeScript strict mode) |
+| **Styling** | Tailwind CSS v4 + Custom ITravelista design system tokens (`#008080` Deep Teal) |
+| **Database & Auth** | Supabase (Postgres, RLS policies, SSR Auth with Google OAuth & Magic Link) |
+| **State Management** | TanStack Query v5 (Server state) + Zustand v5 (Client UI state) |
+| **PWA & Offline** | Web App Manifest + Service Worker caching + Guest Mode `localStorage` fallback |
+| **Testing** | Vitest (Unit tests) + Playwright (E2E tests) |
+| **Deployment** | Self-hosted VPS with Docker / Coolify |
+
+---
+
+## 🚀 Quick Start
+
+### Prerequisites
+- Node.js v20+
+- npm / pnpm
+- Supabase CLI (optional for local DB)
+
+### Installation
+
+1. **Clone the repository:**
+   ```bash
+   git clone https://github.com/your-username/itravelista.git
+   cd itravelista
+   ```
+
+2. **Install dependencies:**
+   ```bash
+   npm install
+   ```
+
+3. **Configure environment variables:**
+   Copy `.env.example` to `.env.local`:
+   ```bash
+   cp .env.example .env.local
+   ```
+
+4. **Run development server:**
+   ```bash
+   npm run dev
+   ```
+   Open [http://localhost:3000](http://localhost:3000) in your browser.
+
+---
+
+## 🧪 Testing & Verification
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+# Type check TypeScript
+npm run type-check
+
+# Run Vitest unit test suite (22 tests)
+npm run test
+
+# Run Playwright E2E tests
+npm run test:e2e
+
+# Production build verification
+npm run build
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+---
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## 🗄️ Database Architecture
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+The Postgres database consists of 6 tables with Row Level Security (RLS) policies:
+- `user_profile` — Extends `auth.users`
+- `trip` — Core trip records with start/end dates and status
+- `checklist_item` — Category-tagged pre-trip tasks
+- `budget_entry` - PHP-denominated expense items
+- `budget_template` — Preset destination budget estimates
+- `visa_requirement` — Curated visa rules for PH passport holders
 
-## Learn More
+SQL migration and seed scripts are available in [supabase/migrations/](file:///c:/Users/Wendell%20Saligan/codes/itravelista/supabase/migrations/) and [supabase/seed.sql](file:///c:/Users/Wendell%20Saligan/codes/itravelista/supabase/seed.sql).
 
-To learn more about Next.js, take a look at the following resources:
+---
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 📄 License
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+MIT License © 2026 ITravelista PH.
