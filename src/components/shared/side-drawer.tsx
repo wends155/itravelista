@@ -45,7 +45,9 @@ export function SideDrawer({ isOpen, onClose }: SideDrawerProps) {
             </div>
             <div>
               <h2 className="text-base font-black text-[#008080]">ITravelista PH</h2>
-              <p className="text-[10px] text-[#6C757D]">From Dreaming to Departing</p>
+              <p className="font-[family-name:var(--font-cursive)] text-xs font-bold text-[#6C757D]">
+                From Dreaming to Departing
+              </p>
             </div>
           </div>
           <button

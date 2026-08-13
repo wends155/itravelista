@@ -37,7 +37,7 @@ export function BottomNav() {
               title="Coming Soon"
             >
               <Icon className="h-5 w-5" />
-              <span className="mt-1 text-[11px] font-medium">{item.label}</span>
+              <span className="mt-1 text-xs font-medium">{item.label}</span>
               <span className="absolute -top-8 rounded bg-gray-800 px-2 py-0.5 text-[10px] text-white opacity-0 transition-opacity group-hover:opacity-100">
                 Soon
               </span>
@@ -55,7 +55,7 @@ export function BottomNav() {
             )}
           >
             <Icon className={cn('h-5 w-5', isActive && 'stroke-[2.5px]')} />
-            <span className={cn('mt-1 text-[11px]', isActive ? 'font-semibold' : 'font-normal')}>
+            <span className={cn('mt-1 text-xs', isActive ? 'font-semibold' : 'font-normal')}>
               {item.label}
             </span>
           </Link>

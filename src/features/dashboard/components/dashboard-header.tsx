@@ -24,7 +24,9 @@ export function DashboardHeader() {
         {/* Title */}
         <div className="text-center">
           <h1 className="text-lg font-black tracking-tight text-[#008080]">ITravelista PH</h1>
-          <p className="text-[10px] font-medium text-[#6C757D]">From Dreaming to Departing</p>
+          <p className="font-[family-name:var(--font-cursive)] text-xs font-bold text-[#6C757D]">
+            From Dreaming to Departing
+          </p>
         </div>
 
         {/* Notification Bell Button & Dropdown Container */}

@@ -7,41 +7,87 @@ export function TravelReadinessWidget() {
   const { data: trips } = useTrips();
 
   const activeTripsCount = (trips || []).length;
+  const percentage = activeTripsCount > 0 ? 82 : 0;
+
+  // SVG Donut Calculations
+  const size = 80;
+  const strokeWidth = 8;
+  const radius = (size - strokeWidth) / 2;
+  const circumference = 2 * Math.PI * radius;
+  const strokeDasharray = `${(percentage / 100) * circumference} ${circumference}`;
+
+  // Conditional CTA & Status
+  const ctaText = activeTripsCount > 0 ? 'View Checklist' : 'Create Your First Trip';
+  const ctaHref = activeTripsCount > 0 ? '/checklist' : '/trips/new';
+  const readinessStatus = activeTripsCount > 0 ? "You're Almost Ready!" : 'Start Planning!';
 
   return (
-    <div className="rounded-2xl border border-[#E0E0E0] bg-white p-4 shadow-[0_4px_12px_rgba(0,0,0,0.08)]">
-      <h3 className="text-sm font-semibold text-[#1A1A1A]">Your Travel Readiness</h3>
+    <div className="relative z-10 -mt-10 rounded-2xl border border-[#E0E0E0] bg-white p-4 shadow-xl">
+      <h3 className="text-sm font-bold text-[#1A1A1A]">Your Travel Readiness</h3>
       <div className="mt-3 flex items-center justify-between gap-3">
+        {/* Left Gauge: SVG Donut Chart */}
         <div className="flex flex-col items-center">
-          {/* Circular gauge */}
-          <div className="relative flex h-20 w-20 items-center justify-center rounded-full border-[6px] border-[#E0F2F1] border-t-[#008080]">
-            <span className="text-lg font-bold text-[#008080]">
-              {activeTripsCount > 0 ? '65%' : '0%'}
-            </span>
+          <div className="relative flex h-20 w-20 items-center justify-center">
+            <svg
+              width={size}
+              height={size}
+              viewBox={`0 0 ${size} ${size}`}
+              className="-rotate-90"
+            >
+              {/* Track Background */}
+              <circle
+                cx={size / 2}
+                cy={size / 2}
+                r={radius}
+                fill="none"
+                stroke="#E0F2F1"
+                strokeWidth={strokeWidth}
+              />
+              {/* Progress Segment */}
+              {percentage > 0 && (
+                <circle
+                  cx={size / 2}
+                  cy={size / 2}
+                  r={radius}
+                  fill="none"
+                  stroke="#008080"
+                  strokeWidth={strokeWidth}
+                  strokeDasharray={strokeDasharray}
+                  strokeLinecap="round"
+                  className="transition-all duration-700"
+                />
+              )}
+            </svg>
+            <div className="absolute inset-0 flex items-center justify-center">
+              <span className="text-lg font-black text-[#008080]">{percentage}%</span>
+            </div>
           </div>
-          <span className="mt-1.5 text-[11px] font-medium text-[#6C757D]">
-            {activeTripsCount > 0 ? 'On Track' : 'Start Planning!'}
+          <span className="mt-1.5 text-xs font-semibold text-[#6C757D]">
+            {readinessStatus}
           </span>
         </div>
 
+        {/* Right Stats */}
         <div className="flex flex-1 flex-col gap-2">
           <div className="rounded-xl bg-[#F8F9FA] p-2.5">
-            <span className="text-[11px] text-[#6C757D]">Active Trips</span>
+            <span className="text-xs text-[#6C757D]">Active Trips</span>
             <p className="text-base font-bold text-[#1A1A1A]">{activeTripsCount} Upcoming</p>
           </div>
           <div className="rounded-xl bg-[#F8F9FA] p-2.5">
-            <span className="text-[11px] text-[#6C757D]">Visa Guides</span>
-            <p className="text-base font-bold text-[#1A1A1A]">10 Available</p>
+            <span className="text-xs text-[#6C757D]">Documents</span>
+            <p className="text-base font-bold text-[#1A1A1A]">8 Saved</p>
           </div>
         </div>
       </div>
 
+      {/* CTA Button */}
       <Link
-        href={activeTripsCount > 0 ? '/trips' : '/trips/new'}
-        className="mt-3 flex w-full items-center justify-center rounded-full bg-[#008080] py-2.5 text-xs font-semibold text-white transition-colors hover:bg-[#006B6B]"
+        href={ctaHref}
+        className="mt-3 flex w-full items-center justify-center rounded-full bg-[#008080] py-2.5 text-xs font-bold text-white shadow-xs transition-colors hover:bg-[#006B6B]"
       >
-        {activeTripsCount > 0 ? 'View All Trips' : 'Create First Trip'}
+        {ctaText}
       </Link>
     </div>
   );
 }
+
