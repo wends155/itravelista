@@ -3,7 +3,13 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "node scripts/dev-with-supabase.mjs",
+    "dev:next": "next dev",
+    "supabase:start": "npx supabase start",
+    "supabase:stop": "npx supabase stop",
+    "supabase:status": "npx supabase status",
+    "supabase:reset": "npx supabase db reset",
+    "env:setup": "node scripts/setup-local-env.mjs",
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
@@ -47,7 +53,7 @@
     "prettier": "^3.9.6",
     "prettier-plugin-tailwindcss": "^0.8.1",
     "tailwindcss": "^4",
-    "typescript": "^5",
+    "typescript": "^7.0.2",
     "vitest": "^2.1.8"
   }
 }

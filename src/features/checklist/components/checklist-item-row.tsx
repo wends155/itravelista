@@ -80,7 +80,7 @@ export function ChecklistItemRow({ item, tripId }: ChecklistItemRowProps) {
         type="button"
         onClick={() => deleteMutation.mutate(item.id)}
         disabled={deleteMutation.isPending}
-        className="text-[#ADB5BD] opacity-0 transition-opacity hover:text-[#D0021B] group-hover:opacity-100 p-1"
+        className="text-[#ADB5BD] opacity-100 transition-opacity hover:text-[#D0021B] md:opacity-0 md:group-hover:opacity-100 p-1 shrink-0"
         aria-label="Delete item"
       >
         <Trash2 className="h-4 w-4" />

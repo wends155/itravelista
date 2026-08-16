@@ -33,8 +33,8 @@ export default function CountryVisaPage({ params }: { params: Promise<{ countryC
   }
 
   return (
-    <div className="flex flex-col pb-28">
-      <PageHeader title={`${visaData.country_name} Visa Guide`} showBack={true} />
+    <div className="flex flex-col pb-32">
+      <PageHeader title={`${visaData.country_name} Visa Guide`} showBack={true} backHref="/visa" />
 
       <div className="flex flex-col gap-5 p-4">
         {/* Stepper Header */}

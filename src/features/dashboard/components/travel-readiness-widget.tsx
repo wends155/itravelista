@@ -10,8 +10,8 @@ export function TravelReadinessWidget() {
   const percentage = activeTripsCount > 0 ? 82 : 0;
 
   // SVG Donut Calculations
-  const size = 80;
-  const strokeWidth = 8;
+  const size = 72;
+  const strokeWidth = 7;
   const radius = (size - strokeWidth) / 2;
   const circumference = 2 * Math.PI * radius;
   const strokeDasharray = `${(percentage / 100) * circumference} ${circumference}`;
@@ -22,12 +22,12 @@ export function TravelReadinessWidget() {
   const readinessStatus = activeTripsCount > 0 ? "You're Almost Ready!" : 'Start Planning!';
 
   return (
-    <div className="relative z-10 -mt-10 rounded-2xl border border-[#E0E0E0] bg-white p-4 shadow-xl">
+    <div className="relative z-10 -mt-10 rounded-2xl border border-[#E0E0E0] bg-white p-3.5 shadow-xl">
       <h3 className="text-sm font-bold text-[#1A1A1A]">Your Travel Readiness</h3>
       <div className="mt-3 flex items-center justify-between gap-3">
         {/* Left Gauge: SVG Donut Chart */}
         <div className="flex flex-col items-center">
-          <div className="relative flex h-20 w-20 items-center justify-center">
+          <div className="relative flex h-[72px] w-[72px] items-center justify-center">
             <svg
               width={size}
               height={size}
@@ -59,7 +59,7 @@ export function TravelReadinessWidget() {
               )}
             </svg>
             <div className="absolute inset-0 flex items-center justify-center">
-              <span className="text-lg font-black text-[#008080]">{percentage}%</span>
+              <span className="text-base font-black text-[#008080]">{percentage}%</span>
             </div>
           </div>
           <span className="mt-1.5 text-xs font-semibold text-[#6C757D]">
@@ -69,11 +69,11 @@ export function TravelReadinessWidget() {
 
         {/* Right Stats */}
         <div className="flex flex-1 flex-col gap-2">
-          <div className="rounded-xl bg-[#F8F9FA] p-2.5">
+          <div className="rounded-xl bg-[#F8F9FA] p-2">
             <span className="text-xs text-[#6C757D]">Active Trips</span>
             <p className="text-base font-bold text-[#1A1A1A]">{activeTripsCount} Upcoming</p>
           </div>
-          <div className="rounded-xl bg-[#F8F9FA] p-2.5">
+          <div className="rounded-xl bg-[#F8F9FA] p-2">
             <span className="text-xs text-[#6C757D]">Documents</span>
             <p className="text-base font-bold text-[#1A1A1A]">8 Saved</p>
           </div>
@@ -83,7 +83,7 @@ export function TravelReadinessWidget() {
       {/* CTA Button */}
       <Link
         href={ctaHref}
-        className="mt-3 flex w-full items-center justify-center rounded-full bg-[#008080] py-2.5 text-xs font-bold text-white shadow-xs transition-colors hover:bg-[#006B6B]"
+        className="mt-2.5 flex w-full items-center justify-center rounded-full bg-[#008080] py-2.5 text-xs font-bold text-white shadow-xs transition-colors hover:bg-[#006B6B]"
       >
         {ctaText}
       </Link>

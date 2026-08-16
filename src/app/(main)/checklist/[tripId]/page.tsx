@@ -1,6 +1,6 @@
 'use client';
 
-import { use, useState, useEffect } from 'react';
+import { use, useState } from 'react';
 import { PageHeader } from '@/components/shared/page-header';
 import { useTrip } from '@/features/trips/hooks/use-trips';
 import {
@@ -27,13 +27,6 @@ export default function TripChecklistPage({ params }: { params: Promise<{ tripId
   const [newTitle, setNewTitle] = useState('');
   const [newCategory, setNewCategory] = useState<ChecklistCategory>('general');
   const [showAddForm, setShowAddForm] = useState(false);
-
-  // Auto-generate items on first load if checklist is empty
-  useEffect(() => {
-    if (items && items.length === 0 && trip?.country_code) {
-      generateMutation.mutate(trip.country_code);
-    }
-  }, [items, trip]);
 
   if (isLoading) {
     return (
@@ -73,10 +66,11 @@ export default function TripChecklistPage({ params }: { params: Promise<{ tripId
   };
 
   return (
-    <div className="flex flex-col pb-24">
+    <div className="flex flex-col">
       <PageHeader
         title={trip?.title ? `${trip.title} Checklist` : 'Smart Checklist'}
         showBack={true}
+        backHref="/checklist"
         rightAction={
           trip?.country_code ? (
             <button

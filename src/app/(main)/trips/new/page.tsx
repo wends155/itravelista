@@ -4,7 +4,7 @@ import { TripForm } from '@/features/trips/components/trip-form';
 export default function NewTripPage() {
   return (
     <div className="flex flex-col">
-      <PageHeader title="Plan a New Trip" showBack={true} />
+      <PageHeader title="Plan a New Trip" showBack={true} backHref="/trips" />
       <div className="p-4">
         <TripForm />
       </div>

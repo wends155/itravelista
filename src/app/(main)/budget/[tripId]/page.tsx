@@ -45,10 +45,11 @@ export default function TripBudgetPage({ params }: { params: Promise<{ tripId: s
   });
 
   return (
-    <div className="flex flex-col pb-24">
+    <div className="flex flex-col">
       <PageHeader
         title={trip?.title ? `${trip.title} Budget` : 'Budget Planner'}
         showBack={true}
+        backHref="/budget"
       />
 
       <div className="flex flex-col gap-5 p-4">

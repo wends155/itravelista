@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Home, MapPin, CheckSquare, MessageCircle, User } from 'lucide-react';
+import { Home, MapPin, CheckSquare, ShieldCheck, Wallet } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 interface NavItem {
@@ -16,8 +16,8 @@ const navItems: NavItem[] = [
   { label: 'Home', href: '/', icon: Home },
   { label: 'My Trips', href: '/trips', icon: MapPin },
   { label: 'Checklist', href: '/checklist', icon: CheckSquare },
-  { label: 'Assistant', href: '#', icon: MessageCircle, disabled: true },
-  { label: 'Profile', href: '/profile', icon: User },
+  { label: 'Visa', href: '/visa', icon: ShieldCheck },
+  { label: 'Budget', href: '/budget', icon: Wallet },
 ];
 
 export function BottomNav() {
@@ -27,7 +27,8 @@ export function BottomNav() {
     <nav className="fixed bottom-0 left-0 right-0 z-50 flex h-16 items-center justify-around border-t border-[#E0E0E0] bg-white px-2 shadow-[0_-2px_8px_rgba(0,0,0,0.06)] md:hidden">
       {navItems.map((item) => {
         const Icon = item.icon;
-        const isActive = pathname === item.href || (item.href !== '/' && pathname.startsWith(item.href));
+        const isActive =
+          pathname === item.href || (item.href !== '/' && pathname.startsWith(item.href));
 
         if (item.disabled) {
           return (

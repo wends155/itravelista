@@ -83,3 +83,80 @@ INSERT INTO public.visa_requirement (country_code, country_name, visa_type, requ
   {"item": "Proof of Accommodation", "description": "Confirmed hotel reservation", "required": true}
 ]'::jsonb, 'Instant (On Arrival)', '{"currency": "PHP", "amount": 0, "notes": "Free entry up to 14 days"}'::jsonb, '2026-08-01')
 ON CONFLICT (country_code) DO NOTHING;
+
+-- SEED DEV TEST USER (dev@itravelista.ph / password123)
+-- Uses PostgreSQL pgcrypto extensions.crypt function for valid bcrypt hashing
+INSERT INTO auth.users (
+  instance_id,
+  id,
+  aud,
+  role,
+  email,
+  encrypted_password,
+  email_confirmed_at,
+  confirmation_token,
+  recovery_token,
+  email_change_token_new,
+  email_change,
+  raw_app_meta_data,
+  raw_user_meta_data,
+  is_super_admin,
+  created_at,
+  updated_at,
+  last_sign_in_at,
+  email_change_token_current,
+  phone_change_token,
+  reauthentication_token
+) VALUES (
+  '00000000-0000-0000-0000-000000000000',
+  'a1b2c3d4-e5f6-7890-abcd-ef1234567890',
+  'authenticated',
+  'authenticated',
+  'dev@itravelista.ph',
+  extensions.crypt('password123', extensions.gen_salt('bf')),
+  NOW(),
+  '',
+  '',
+  '',
+  '',
+  '{"provider":"email","providers":["email"]}'::jsonb,
+  '{"display_name":"Dev Tester"}'::jsonb,
+  FALSE,
+  NOW(),
+  NOW(),
+  NOW(),
+  '',
+  '',
+  ''
+) ON CONFLICT (id) DO NOTHING;
+
+INSERT INTO public.user_profile (id, email, display_name, auth_provider)
+VALUES (
+  'a1b2c3d4-e5f6-7890-abcd-ef1234567890',
+  'dev@itravelista.ph',
+  'Dev Tester',
+  'email'
+) ON CONFLICT (id) DO NOTHING;
+
+INSERT INTO auth.identities (
+  id,
+  user_id,
+  identity_data,
+  provider,
+  provider_id,
+  last_sign_in_at,
+  created_at,
+  updated_at
+) VALUES (
+  'a1b2c3d4-e5f6-7890-abcd-ef1234567890',
+  'a1b2c3d4-e5f6-7890-abcd-ef1234567890',
+  '{"sub":"a1b2c3d4-e5f6-7890-abcd-ef1234567890","email":"dev@itravelista.ph"}'::jsonb,
+  'email',
+  'dev@itravelista.ph',
+  NOW(),
+  NOW(),
+  NOW()
+) ON CONFLICT (provider, provider_id) DO NOTHING;
+
+
+

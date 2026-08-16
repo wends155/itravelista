@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useCreateTrip } from '../hooks/use-trips';
 import type { TripFormData } from '../types';
@@ -72,8 +73,24 @@ export function TripForm() {
   return (
     <form onSubmit={handleSubmit} className="flex flex-col gap-5 rounded-3xl bg-white p-6 shadow-md border border-[#E0E0E0]">
       {errorMsg && (
-        <div className="rounded-xl bg-red-50 p-3 text-xs text-[#D0021B] border border-red-200">
-          {errorMsg}
+        <div className="rounded-xl bg-red-50 p-3.5 text-xs text-[#D0021B] border border-red-200">
+          <p className="font-medium">{errorMsg}</p>
+          {errorMsg.toLowerCase().includes('signed in') && (
+            <div className="mt-2.5 flex items-center gap-2">
+              <Link
+                href="/login"
+                className="rounded-full bg-[#008080] px-4 py-1.5 text-xs font-bold text-white shadow-xs transition-colors hover:bg-[#006B6B]"
+              >
+                Sign In
+              </Link>
+              <Link
+                href="/signup"
+                className="rounded-full border border-[#008080] bg-white px-4 py-1.5 text-xs font-bold text-[#008080] transition-colors hover:bg-[#E0F2F1]"
+              >
+                Sign Up
+              </Link>
+            </div>
+          )}
         </div>
       )}
 

@@ -31,20 +31,22 @@ export function VisaCountrySelector() {
 
   return (
     <div className="flex flex-col gap-4">
-      {/* Search Input */}
-      <div className="relative flex items-center">
-        <Search className="absolute left-3.5 h-4 w-4 text-[#6C757D]" />
-        <input
-          type="text"
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          placeholder="Search country (e.g. Japan, Korea)"
-          className="w-full rounded-2xl border border-[#E0E0E0] bg-white py-3 pl-10 pr-4 text-sm shadow-xs focus:border-[#008080] focus:outline-none"
-        />
+      {/* Search Input — sticky below PageHeader */}
+      <div className="sticky top-[57px] z-30 -mx-4 bg-[#F8F9FA] px-4 pb-1 pt-1">
+        <div className="relative flex items-center">
+          <Search className="absolute left-3.5 h-4 w-4 text-[#6C757D]" />
+          <input
+            type="text"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            placeholder="Search country (e.g. Japan, Korea)"
+            className="w-full rounded-2xl border border-[#E0E0E0] bg-white py-3 pl-10 pr-4 text-sm shadow-xs focus:border-[#008080] focus:outline-none"
+          />
+        </div>
       </div>
 
       {/* Country List */}
-      <div className="flex flex-col gap-2.5">
+      <div className="flex flex-col gap-2.5 touch-pan-y">
         {filteredCountries.map((country) => (
           <button
             key={country.country_code}

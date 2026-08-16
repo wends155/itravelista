@@ -1,7 +1,5 @@
 'use client';
 
-import { useEffect } from 'react';
-import { useRouter } from 'next/navigation';
 import { useTrips } from '@/features/trips/hooks/use-trips';
 import { PageHeader } from '@/components/shared/page-header';
 import { EmptyState } from '@/components/shared/empty-state';
@@ -9,14 +7,7 @@ import { CheckSquare, ArrowRight } from 'lucide-react';
 import Link from 'next/link';
 
 export default function ChecklistSelectorPage() {
-  const router = useRouter();
   const { data: trips, isLoading } = useTrips();
-
-  useEffect(() => {
-    if (trips && trips.length === 1 && trips[0]?.id) {
-      router.replace(`/checklist/${trips[0].id}`);
-    }
-  }, [trips, router]);
 
   if (isLoading) {
     return (
@@ -29,7 +20,7 @@ export default function ChecklistSelectorPage() {
   if (!trips || trips.length === 0) {
     return (
       <div className="flex flex-col">
-        <PageHeader title="Smart Checklist" />
+        <PageHeader title="Smart Checklist" showBack={true} backHref="/" />
         <div className="p-4">
           <EmptyState
             icon={CheckSquare}
@@ -50,8 +41,8 @@ export default function ChecklistSelectorPage() {
   }
 
   return (
-    <div className="flex flex-col pb-24">
-      <PageHeader title="Select a Trip Checklist" />
+    <div className="flex flex-col">
+      <PageHeader title="Select a Trip Checklist" showBack={true} backHref="/" />
       <div className="flex flex-col gap-3 p-4">
         {trips.map((trip) => (
           <Link

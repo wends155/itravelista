@@ -66,7 +66,7 @@ export function AuthForm({ mode }: AuthFormProps) {
   };
 
   return (
-    <div className="flex w-full max-w-sm flex-col gap-6 rounded-3xl bg-white p-6 shadow-xl border border-[#E0E0E0]">
+    <div className="flex w-full max-w-sm flex-col gap-4 sm:gap-6 rounded-3xl bg-white p-5 sm:p-6 shadow-xl border border-[#E0E0E0]">
       <SocialButton />
 
       <div className="relative flex items-center justify-center">
@@ -90,7 +90,7 @@ export function AuthForm({ mode }: AuthFormProps) {
         </div>
       )}
 
-      <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+      <form onSubmit={handleSubmit} className="flex flex-col gap-3.5 sm:gap-4">
         {mode === 'signup' && (
           <div className="flex flex-col gap-1">
             <label className="text-xs font-semibold text-[#1A1A1A]">Full Name</label>
@@ -153,7 +153,7 @@ export function AuthForm({ mode }: AuthFormProps) {
         <button
           type="submit"
           disabled={isSubmitting}
-          className="mt-2 flex w-full items-center justify-center gap-2 rounded-full bg-[#008080] py-3 text-sm font-semibold text-white transition-colors hover:bg-[#006B6B] disabled:opacity-50"
+          className="mt-1.5 flex w-full items-center justify-center gap-2 rounded-full bg-[#008080] py-2.5 sm:py-3 text-sm font-semibold text-white transition-colors hover:bg-[#006B6B] disabled:opacity-50"
         >
           {isSubmitting
             ? 'Processing...'
@@ -166,7 +166,7 @@ export function AuthForm({ mode }: AuthFormProps) {
         </button>
       </form>
 
-      <div className="flex flex-col items-center gap-3 border-t border-[#E0E0E0] pt-4 text-center">
+      <div className="flex flex-col items-center gap-2.5 sm:gap-3 border-t border-[#E0E0E0] pt-3.5 sm:pt-4 text-center">
         {mode === 'login' ? (
           <p className="text-xs text-[#6C757D]">
             Don&apos;t have an account?{' '}
@@ -181,6 +181,22 @@ export function AuthForm({ mode }: AuthFormProps) {
               Sign In
             </Link>
           </p>
+        )}
+
+        {process.env.NODE_ENV === 'development' && mode === 'login' && (
+          <div className="rounded-xl border border-dashed border-[#008080]/30 bg-[#E0F2F1]/50 p-2.5 text-center">
+            <p className="text-[11px] font-semibold text-[#008080]">🧪 Dev Quick Testing</p>
+            <button
+              type="button"
+              onClick={() => {
+                setEmail('dev@itravelista.ph');
+                setPassword('password123');
+              }}
+              className="mt-1 rounded-lg bg-[#008080] px-3 py-1 text-xs font-bold text-white transition-colors hover:bg-[#006B6B]"
+            >
+              Quick Fill Test Account (dev@itravelista.ph)
+            </button>
+          </div>
         )}
 
         <button

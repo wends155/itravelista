@@ -2,6 +2,7 @@
 
 import { use } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { PageHeader } from '@/components/shared/page-header';
 import { useTrip } from '@/features/trips/hooks/use-trips';
 import { formatDate, daysUntil, getTripStatus } from '@/lib/utils';
@@ -35,18 +36,20 @@ export default function TripDetailPage({ params }: { params: Promise<{ id: strin
   const status = getTripStatus(trip.start_date, trip.end_date);
 
   return (
-    <div className="flex flex-col pb-24">
-      <PageHeader title={trip.title} showBack={true} />
+    <div className="flex flex-col">
+      <PageHeader title={trip.title} showBack={true} backHref="/trips" />
 
       {/* Hero Banner */}
       <div className="relative h-52 w-full bg-slate-800">
-        <img
+        <Image
           src={
             trip.cover_image_url ||
             'https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?auto=format&fit=crop&w=600&q=80'
           }
           alt={trip.destination}
-          className="h-full w-full object-cover"
+          fill
+          className="object-cover"
+          sizes="(max-width: 768px) 100vw, 672px"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
 

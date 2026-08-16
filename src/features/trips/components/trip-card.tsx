@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import Image from 'next/image';
 import type { Trip } from '@/types/database';
 import { formatDate, daysUntil, getTripStatus } from '@/lib/utils';
 import { Calendar, MapPin, Clock } from 'lucide-react';
@@ -38,10 +39,12 @@ export function TripCard({ trip }: TripCardProps) {
       <div className="relative overflow-hidden rounded-2xl border border-[#E0E0E0] bg-white shadow-[0_4px_12px_rgba(0,0,0,0.08)] transition-transform duration-200 group-hover:-translate-y-1">
         {/* Cover Image Container */}
         <div className="relative h-44 w-full overflow-hidden bg-gray-100">
-          <img
+          <Image
             src={getCoverImage()}
             alt={trip.destination}
-            className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+            fill
+            className="object-cover transition-transform duration-500 group-hover:scale-105"
+            sizes="(max-width: 768px) 100vw, 50vw"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent" />
 

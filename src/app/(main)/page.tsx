@@ -5,16 +5,13 @@ import { TravelReadinessWidget } from '@/features/dashboard/components/travel-re
 
 export default function DashboardPage() {
   return (
-    <div className="mx-auto flex max-w-lg flex-col gap-4 pb-24 md:max-w-2xl">
+    <div className="mx-auto flex max-w-lg flex-col gap-3 md:max-w-2xl">
       {/* App Header */}
       <DashboardHeader />
 
       {/* Hero Section */}
       <section className="px-4">
-        <div
-          className="relative overflow-hidden rounded-3xl shadow-lg"
-          style={{ minHeight: '200px' }}
-        >
+        <div className="relative min-h-[140px] overflow-hidden rounded-3xl shadow-lg sm:min-h-[200px]">
           {/* Background Image */}
           <div
             className="absolute inset-0 bg-cover bg-center"
@@ -49,49 +46,49 @@ export default function DashboardPage() {
         <TravelReadinessWidget />
       </section>
 
-      {/* Quick Access Grid */}
+      {/* Quick Access Row */}
       <section className="px-4">
         <h3 className="text-sm font-bold text-[#1A1A1A]">Quick Access</h3>
-        <div className="mt-2.5 grid grid-cols-2 gap-2.5 text-center sm:grid-cols-4">
+        <div className="mt-2.5 flex gap-2.5 overflow-x-auto pb-1 text-center scrollbar-none sm:gap-3">
           <Link
             href="/visa"
-            className="flex flex-col items-center gap-2 rounded-2xl bg-white p-3 shadow-2xs transition-colors hover:border hover:border-[#008080]"
+            className="flex min-w-0 flex-1 flex-col items-center gap-2 rounded-2xl bg-white p-3 shadow-2xs transition-colors hover:border hover:border-[#008080]"
           >
             <div className="flex h-11 w-11 items-center justify-center rounded-full bg-[#E0F2F1] text-[#008080]">
               <ShieldCheck className="h-5 w-5" />
             </div>
-            <span className="text-xs font-semibold text-[#1A1A1A]">Visa Assistant</span>
+            <span className="text-xs font-semibold text-[#1A1A1A] truncate w-full">Visa Assistant</span>
           </Link>
 
           <Link
             href="/checklist"
-            className="flex flex-col items-center gap-2 rounded-2xl bg-white p-3 shadow-2xs transition-colors hover:border hover:border-[#008080]"
+            className="flex min-w-0 flex-1 flex-col items-center gap-2 rounded-2xl bg-white p-3 shadow-2xs transition-colors hover:border hover:border-[#008080]"
           >
             <div className="flex h-11 w-11 items-center justify-center rounded-full bg-[#E0F2F1] text-[#008080]">
               <FileText className="h-5 w-5" />
             </div>
-            <span className="text-xs font-semibold text-[#1A1A1A]">Checklist</span>
+            <span className="text-xs font-semibold text-[#1A1A1A] truncate w-full">Checklist</span>
           </Link>
 
           <Link
             href="/budget"
-            className="flex flex-col items-center gap-2 rounded-2xl bg-white p-3 shadow-2xs transition-colors hover:border hover:border-[#008080]"
+            className="flex min-w-0 flex-1 flex-col items-center gap-2 rounded-2xl bg-white p-3 shadow-2xs transition-colors hover:border hover:border-[#008080]"
           >
             <div className="flex h-11 w-11 items-center justify-center rounded-full bg-[#E0F2F1] text-[#008080]">
               <Wallet className="h-5 w-5" />
             </div>
-            <span className="text-xs font-semibold text-[#1A1A1A]">Budget</span>
+            <span className="text-xs font-semibold text-[#1A1A1A] truncate w-full">Budget</span>
           </Link>
 
           <div
-            className="flex flex-col items-center gap-2 rounded-2xl bg-white p-3 opacity-50 cursor-not-allowed"
+            className="flex min-w-0 flex-1 flex-col items-center gap-2 rounded-2xl bg-white p-3 opacity-50 cursor-not-allowed"
             aria-label="Travel Guides coming soon"
             title="Coming soon"
           >
             <div className="flex h-11 w-11 items-center justify-center rounded-full bg-gray-100 text-gray-400">
               <Compass className="h-5 w-5" />
             </div>
-            <span className="text-xs font-semibold text-gray-500">Guides (Soon)</span>
+            <span className="text-xs font-semibold text-gray-500 truncate w-full">Guides (Soon)</span>
           </div>
         </div>
       </section>
